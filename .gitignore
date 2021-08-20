@@ -1,0 +1,22 @@
+/docs/
+/lib/
+/bin/
+/.shards/
+*.dwarf
+
+# Vendored simde sources
+vendor/simde-amalgamated/
+
+# Libraries ought not lock dependencies
+/shard.lock
+
+# Example Artifacts
+/examples/demo
+/examples/demo.app
+
+# Precompiled C headers
+# See https://github.com/microsoft/vscode-cpptools/issues/3347
+/.vscode/ipch/
+
+# Environment config, see https://direnv.net
+.envrc

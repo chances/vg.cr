@@ -1,0 +1,24 @@
+name: vg
+version: 0.1.0
+description: 2D vector graphics rendering library
+license: MIT
+authors:
+  - Chance Snow <git@chancesnow.me>
+
+crystal: ">= 1.0.0, < 2.0"
+
+# dependencies:
+#   pg:
+#     github: will/crystal-pg
+#     version: "~> 0.5"
+
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+    version: ~> 0.14.3
+  clang:
+    github: crystal-lang/clang.cr
+    branch: master
+  stumpy_png:
+    github: stumpycr/stumpy_png
+    version: "~> 5.0"
