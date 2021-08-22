@@ -7,8 +7,13 @@ module VG
     def initialize(@x : Scalar, @y : Scalar)
     end
 
-    def self.origin : Point
+    def self.zero : Point
       Point.new(0, 0)
+    end
+
+    # Whether `x` and `y` are both zero.
+    def zero? : Bool
+      x == 0 && y == 0
     end
 
     def - : Point
@@ -71,6 +76,10 @@ module VG
 
     def left
       @x
+    end
+
+    def area : Scalar
+      @width * @height
     end
 
     # Calculates the center of this rectangle.
