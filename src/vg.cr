@@ -91,24 +91,44 @@ module VG
     end
   end
 
-  record RoundRect, x : Scalar, y : Scalar, width : Scalar, height : Scalar, radii : Radii do
-    def initialize(bounds : Rectangle, @radii : Radii)
-      @x = bounds.x
-      @y = bounds.y
-      @width = bounds.width
-      @height = bounds.height
+  record RoundRect, bounds : Rectangle, radii : Radii do
+    getter bounds : Rectangle
+    getter radii : Radii
+
+    # A rounded rectangle with circular corners.
+    def initialize(@bounds : Rectangle, radius : Scalar)
+      @radii = Point.new radius, radius
     end
 
-    def initialize(@x : Scalar, @y : Scalar, @width : Scalar, @height : Scalar, @radii : Radii)
+    # A rounded rectangle with elliptical corners.
+    def initialize(@bounds : Rectangle, @radii : Radii)
     end
 
-    def bounds
-      Rectangle.new @x, @y, @width, @height
+    # A rounded rectangle with circular corners.
+    def initialize(x : Scalar, y : Scalar, width : Scalar, height : Scalar, radius : Scalar)
+      @bounds = Rectangle.new x, y, width, height
+      @radii = Point.new radius, radius
     end
 
-    # X and Y radii
-    def radii
-      @radii
+    # A rounded rectangle with elliptical corners.
+    def initialize(x : Scalar, y : Scalar, width : Scalar, height : Scalar, @radii : Radii)
+      @bounds = Rectangle.new x, y, width, height
+    end
+
+    def x : Scalar
+      @bounds.x
+    end
+
+    def y : Scalar
+      @bounds.y
+    end
+
+    def width : Scalar
+      @bounds.width
+    end
+
+    def height : Scalar
+      @bounds.height
     end
   end
 
