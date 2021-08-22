@@ -146,6 +146,32 @@ module VG
       bottom = Math.max(self.bottom, other.bottom)
       Rectangle.new(x, y, right - x, bottom - y)
     end
+
+    def inset(delta : Scalar) : Rectangle
+      inset_position = position + Point.new(delta, delta)
+      result = Rect.new(inset_position, Size.new(
+        right - delta - inset_position.x,
+        bottom - delta - inset_position.y,
+      ))
+      if (result.x > result.right)
+        result.x = (result.x + result.right) / 2
+        result.width = 0
+      end
+      if (result.y > result.bottom)
+        result.y = (result.y + result.bottom) / 2
+        result.height = 0
+      end
+      return result
+    end
+
+    def outset(delta : Scalar) : Rectangle
+      outset_position = position - Point.new(delta, delta)
+      right, bottom = rect.right + delta, rect.bottom + delta
+      Rectangle.new(
+        outset_position.x, outset_position.y,
+        right - outset_position.x, bottom - outset_position.y,
+      )
+    end
   end
 
   record RoundRect, bounds : Rectangle, radii : Radii do
@@ -186,6 +212,26 @@ module VG
 
     def height : Scalar
       @bounds.height
+    end
+
+    # Inset this rounded rectangle by the given `delta`.
+    # If `adjust_corners` is `true`, the corner radii will be adjusted to maintain equal distance from the source
+    # rectangle.
+    def inset(delta : Scalar, *, adjust_corners = true) : RoundRect
+      result = RoundRect.new(
+        @bounds.inset(delta),
+        adjust_corners ? @radii - Point.new(delta, delta) : @radii
+      )
+      result.radii.x = 0 if result.radii.x < 0
+      result.radii.y = 0 if result.radii.y < 0
+      return result
+    end
+
+    def outset(delta : Scalar, *, adjust_corners = true) : RoundRect
+      RoundRect.new(
+        @bounds.outset(delta),
+        adjust_corners ? @radii + Point.new(delta, delta) : @radii
+      )
     end
   end
 
