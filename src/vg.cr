@@ -43,6 +43,25 @@ module VG
     end
   end
 
+  # A 2D line segment.
+  record Line, a : Position, b : Position do
+    def initialize(@a : Position, @b : Position)
+    end
+
+    def initialize(x1 : Scalar, y1 : Scalar, x2 : Scalar, y2 : Scalar)
+      @a = Point.new x1, y1
+      @b = Point.new x2, y2
+    end
+
+    def length : Scalar
+      Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2)
+    end
+
+    def midpoint : Position
+      Point.new (a.x + b.x) / 2, (a.y + b.y) / 2
+    end
+  end
+
   record Rectangle, x : Scalar, y : Scalar, width : Scalar, height : Scalar do
     def initialize(position : Position, size : Size)
       @x = position.x
