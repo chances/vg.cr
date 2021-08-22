@@ -192,8 +192,47 @@ module VG
       end
     end
 
-    # TODO: Implement offset: https://github.com/cerjones/dg2d/blob/f30334722a85a93d1426ab6585bf8ea2a1164c2a/source/dg2d/pathiterator.d#L165
-    # TODO: Implement scale: https://github.com/cerjones/dg2d/blob/f30334722a85a93d1426ab6585bf8ea2a1164c2a/source/dg2d/pathiterator.d#L200
+    # Offset this path by the given `delta`.
+    def offset(delta : Point) : Path
+      Path.new self.each.map do |segment|
+        PathSegment.new segment.command, segment.points.map { |point| point + delta }
+      end
+    end
+
+    def offset(delta_x : Scalar, delta_y : Scalar) : Path
+      self.offset Point.new(delta_x, delta_y)
+    end
+
+    # Scale this path by the given `factor`.
+    def scale(factor : Point) : Path
+      Path.new self.each.map do |segment|
+        PathSegment.new segment.command, segment.points.map { |point| point * factor }
+      end
+    end
+
+    def scale(factor_x : Scalar, factor_y : Scalar) : Path
+      self.scale Point.new(factor_x, factor_y)
+    end
+
+    # Scale this path relative to the given `focus`.
+    def scale(factor : Point, focus : Point) : Path
+      Path.new self.each.map do |segment|
+        PathSegment.new segment.command, segment.points.map do |point|
+          Point.new(
+            (point.x - focus.x) * factor.x + focus.x,
+            (point.y - focus.y) * factor.y + focus.x,
+          )
+        end
+      end
+    end
+
+    def scale(factor_x : Scalar, factor_y : Scalar, focus : Point) : Path
+      self.scale Point.new(factor_x, factor_y), focus
+    end
+
+    def scale(factor_x : Scalar, factor_y : Scalar, focus_x : Scalar, focus_y : Scalar) : Path
+      self.scale Point.new(factor_x, factor_y), Point.new(focus_x, focus_y)
+    end
 
     # This path in reverse.
     def retro : Path

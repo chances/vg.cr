@@ -6,6 +6,26 @@ module VG
   record Point, x : Scalar, y : Scalar do
     def initialize(@x : Scalar, @y : Scalar)
     end
+
+    def self.origin : Point
+      Point.new(0, 0)
+    end
+
+    def - : Point
+      Point.new(-@x, -@y)
+    end
+
+    def +(other : self) : Point
+      Point.new(@x + other.x, @y + other.y)
+    end
+
+    def -(other : self) : Point
+      Point.new(@x - other.x, @y - other.y)
+    end
+
+    def *(other : self) : Point
+      Point.new(@x * other.x, @y * other.y)
+    end
   end
 
   alias Position = Point
