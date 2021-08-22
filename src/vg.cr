@@ -29,11 +29,11 @@ module VG
     def initialize(@x : Scalar, @y : Scalar, @width : Scalar, @height : Scalar)
     end
 
-    def position
+    def position : Position
       Position.new x, y
     end
 
-    def size
+    def size : Size
       Size.new width, height
     end
 
@@ -51,6 +51,14 @@ module VG
 
     def left
       @x
+    end
+
+    # Calculates the center of this rectangle.
+    def center : Point
+      Point.new(
+        left + ((right - left) / 2),
+        top + ((bottom - top) / 2),
+      )
     end
   end
 
