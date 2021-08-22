@@ -89,6 +89,47 @@ module VG
         top + ((bottom - top) / 2),
       )
     end
+
+    def offset(delta : Point) : Rectangle
+      Rectangle.new position + delta, size
+    end
+
+    def offset(x : Scalar, y : Scalar) : Rectangle
+      self.offset Point.new(x, y)
+    end
+
+    def scale(factor : Point) : Rectangle
+      scaled_position = position * factor
+      Rectangle.new scaled_position, Size.new(
+        right * factor.x - scaled_position.x,
+        bottom * factor.y - scaled_position.y,
+      )
+    end
+
+    def scale(x : Scalar, y : Scalar) : Rectangle
+      self.scale Point.new(x, y)
+    end
+
+    def scale_relative_to(factor : Point, focus : Point) : Rectangle
+      scaled_position = Point.new(
+        (@x - focus.x) * factor.x + focus.x,
+        (@y - focus.y) * factor.y + focus.y,
+      )
+      scaled_right = (right - focus.x) * factor.x + focus.x
+      scaled_bottom = (bottom - focus.y) * factor.y + focus.y
+      Rectangle.new scaled_position, Size.new(
+        scaled_right - scaled_position.x,
+        scaled_bottom - scaled_position.y,
+      )
+    end
+
+    def scale_relative_to(x : Scalar, y : Scalar, focus : Point) : Rectangle
+      self.scale_relative_to Point.new(x, y), focus
+    end
+
+    def scale_relative_to(x : Scalar, y : Scalar, focus_x : Scalar, focus_y : Scalar) : Rectangle
+      self.scale_relative_to Point.new(x, y), Point.new(focus_x, focus_y)
+    end
   end
 
   record RoundRect, bounds : Rectangle, radii : Radii do
