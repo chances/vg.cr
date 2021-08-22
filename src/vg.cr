@@ -1,5 +1,7 @@
 require "./colors"
 
+# TODO: https://www.rubydoc.info/gems/gosu_lighting/0.1.1/GosuLighting/Source
+
 module VG
   alias Scalar = Float64
 
