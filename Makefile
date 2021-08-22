@@ -35,7 +35,7 @@ lib/clang/bin/c2cr: shards lib/clang
 vendor-libs: vendor-simde
 .PHONY: vendor-libs
 
-LIB_SIMDE_ARTIFACTS := vendor/simde-amalgamated
+LIB_SIMDE_ARTIFACTS :=
 LIB_SIMDE_SUPPORTED_ARCH_X86 := x86_64 i386
 LIB_SIMDE_SUPPORTED_ARCH_ARM := aarch64 arm
 LIB_SIMDE_X86 := $(findstring ${ARCH},${LIB_SIMDE_SUPPORTED_ARCH_X86})
@@ -47,11 +47,15 @@ endif
 ifeq (${LIB_SIMDE_ARM},${ARCH})
 	LIB_SIMDE_DIR := $(shell pwd)/vendor/simde-amalgamated/arm
 endif
+ifdef (LIB_SIMDE_DIR)
+	LIB_SIMDE_ARTIFACTS += $(shell find $(LIB_SIMDE_DIR) -name '*.h')
+	CFLAGS += --link-flags ${LIB_SIMDE_ARTIFACTS}
+endif
 
 vendor/simde-amalgamated: vendor/simde.cr
 	crystal vendor/simde.cr
 
-vendor-simde: ${LIB_SIMDE_ARTIFACTS}
+vendor-simde: vendor/simde-amalgamated
 ifneq (${LIB_SIMDE_ARCH},${ARCH})
 	$(error Unsupported platform (${ARCH}) for native dependency SIMDe!)
 endif
@@ -61,8 +65,6 @@ endif
 ifeq (${LIB_SIMDE_ARM},${ARCH})
 	$(info Using arm SIMDe sources from ${LIB_SIMDE_DIR})
 endif
-	LIB_SIMDE_ARTIFACTS += $(shell file $(LIB_SIMDE_DIR) -n '*.h')
-	CFLAGS += --link-flags ${LIB_SIMDE_ARTIFACTS}
 .PHONY: vendor-simde
 
 src/lib-simde.cr: lib/clang/bin/c2cr ${LIB_SIMDE_ARTIFACTS}
