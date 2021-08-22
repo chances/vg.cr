@@ -130,6 +130,22 @@ module VG
     def scale_relative_to(x : Scalar, y : Scalar, focus_x : Scalar, focus_y : Scalar) : Rectangle
       self.scale_relative_to Point.new(x, y), Point.new(focus_x, focus_y)
     end
+
+    # The intersection of this and an `other` rectangle.
+    def intersect(other : Rectangle) : Rectangle
+      x, y = Math.max(@x, other.x), Math.max(@y, other.y)
+      right = Math.min(self.right, other.right)
+      bottom = Math.min(self.bottom, other.bottom)
+      Rectangle.new(x, y, right - x, bottom - y)
+    end
+
+    # The combination of this and an `other` rectangle.
+    def combine(other : Rectangle) : Rectangle
+      x, y = Math.min(@x, other.x), Math.min(@y, other.y)
+      right = Math.max(self.right, other.right)
+      bottom = Math.max(self.bottom, other.bottom)
+      Rectangle.new(x, y, right - x, bottom - y)
+    end
   end
 
   record RoundRect, bounds : Rectangle, radii : Radii do
