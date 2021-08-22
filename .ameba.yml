@@ -20,6 +20,8 @@ Style/RedundantReturn:
   AllowEmptyReturn: true
   Excluded:
   - examples/demo.cr
+  - src/colors.cr
+  - src/path.cr
   - src/vg.cr
   Enabled: true
   Severity: Convention
